@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>sed命令详解</title>
+    <link href="/2022/05/03/sed%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/"/>
+    <url>/2022/05/03/sed%E5%91%BD%E4%BB%A4%E8%AF%A6%E8%A7%A3/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Sed"><a href="#Sed" class="headerlink" title="Sed"></a>Sed</h1><h2 id="特点及其格式"><a href="#特点及其格式" class="headerlink" title="特点及其格式"></a>特点及其格式</h2><ul><li><p>sed stream editor 流编辑器，sed 把 处理的内容（文件），当作是水，源源不断的进行处理，直到文件末尾</p></li><li><p>sed 格式</p></li></ul><table><thead><tr><th>命令</th><th>选项</th><th>（s)sed命令功能（g)修饰符</th><th>参数(文件)</th></tr></thead><tbody><tr><td>sed</td><td>-r</td><td>‘s#oldboy#oldgirl#g’</td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr></tbody></table><ul><li>sed 核心命令（增删改查）</li></ul><table><thead><tr><th>功能</th><th></th></tr></thead><tbody><tr><td>s</td><td>替换substitute sub</td></tr><tr><td>p</td><td>显示 print</td></tr><tr><td>d</td><td>删除 delete</td></tr><tr><td>cai</td><td>增加 c&#x2F;a&#x2F;i</td></tr></tbody></table><h2 id="sed-命令执行过程"><a href="#sed-命令执行过程" class="headerlink" title="sed 命令执行过程"></a>sed 命令执行过程</h2><p>找谁干啥</p><h2 id="sed-核心应用"><a href="#sed-核心应用" class="headerlink" title="sed 核心应用"></a>sed 核心应用</h2><p>1）sed- 查找 p</p><table><thead><tr><th>查找格式</th><th></th></tr></thead><tbody><tr><td>‘1p’ ‘2p’</td><td>指定行号进行查找</td></tr><tr><td>‘1,5p’</td><td>指定行号范围进行查找</td></tr><tr><td>‘&#x2F;lidao&#x2F;p’</td><td>类似与grep,过滤，支持正则</td></tr><tr><td>‘&#x2F;10:00&#x2F;,&#x2F;11:00&#x2F;p’</td><td>表示范围的过滤</td></tr></tbody></table><p>2） </p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>dart学习笔记</title>
     <link href="/2022/04/30/dart%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     <url>/2022/04/30/dart%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
