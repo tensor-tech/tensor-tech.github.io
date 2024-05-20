@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="//cdn.staticfile.net/Primer/21.0.7/primer.css" rel="stylesheet" />
+    <link rel="icon" href="https://github.githubassets.com/favicons/favicon.svg"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="# QT CMake
+
+文章来源：https://doc.qt.io/qt-6.5/cmake-get-started.html
+
+## 开始使用CMake
+
+CMake是一组工具，用于构建、测试和打包应用程序。">
+<meta property="og:title" content="QT CMake">
+<meta property="og:description" content="# QT CMake
+
+文章来源：https://doc.qt.io/qt-6.5/cmake-get-started.html
+
+## 开始使用CMake
+
+CMake是一组工具，用于构建、测试和打包应用程序。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://tensor-tech.github.io/post/QT%20CMake.html">
+<meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
+<title>QT CMake</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">QT CMake</h1>
+<div class="title-right">
+    <a href="https://tensor-tech.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/tensor-tech/tensor-tech.github.io/issues/2" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h1>QT CMake</h1>
+<p>文章来源：<a href="https://doc.qt.io/qt-6.5/cmake-get-started.html" rel="nofollow">https://doc.qt.io/qt-6.5/cmake-get-started.html</a></p>
+<h2>开始使用CMake</h2>
+<p>CMake是一组工具，用于构建、测试和打包应用程序。与Qt一样，它在所有主要开发平台上都可以使用。它也得到了各种IDE的支持，包括Qt Creator。<br>
+在本节中，我们将向您展示在CMake项目中使用Qt的最简单方法。首先，我们将创建一个基本的控制台应用程序。然后，我们将把项目扩展为一个使用Qt小部件的GUI应用程序。<br>
+如果您想知道如何构建带有Qt的现有CMake项目，请参阅有关如何使用命令行构建项目的文档。</p>
+<h2>构建一个C++控制台应用程序</h2>
+<p>CMake项目是由用CMake语言编写的文件定义的。主要的文件叫做<code class="notranslate">CMakeLists.txt</code>，通常放在实际程序源代码的同一目录下。<br>
+下面是一个使用Qt编写的C++控制台应用程序的典型<code class="notranslate">CMakeLists.txt</code>文件：</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">cmake_minimum_required</span>(<span class="pl-k">VERSION</span> 3.16)
+
+<span class="pl-c1">project</span>(helloworld <span class="pl-k">VERSION</span> 1.0.0 <span class="pl-k">LANGUAGES</span> CXX)
+
+<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD 17)
+<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
+
+<span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Core)
+qt_standard_project_setup()
+
+qt_add_executable(helloworld
+    main.cpp
+)
+
+<span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Core)</pre></div>
+<p>让我们逐行来了解一下内容。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">cmake_minimum_required</span>(<span class="pl-k">VERSION</span> 3.16)</pre></div>
+<p><code class="notranslate">cmake_minimum_required() </code>指定了应用程序所需的最低CMake版本，Qt本身至少需要CMake版本为3.16。</p>
+<p>如果您使用的是静态构建的Qt - 在Qt for iOS和Qt for WebAssembly中这是默认的 - 您需要CMake 3.21.1或更高版本。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">project</span>(helloworld <span class="pl-k">VERSION</span> 1.0.0 <span class="pl-k">LANGUAGES</span> CXX)</pre></div>
+<p>project() 设置项目名称和默认项目版本。LANGUAGES 参数告诉 CMake 程序是用 C++ 编写的。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">set</span>(CMAKE_CXX_STANDARD 17)
+<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)</pre></div>
+<p>Qt 6 需要一个支持 C++ 版本 17 或更新的编译器。通过设置 CMAKE_CXX_STANDARD 和 CMAKE_CXX_STANDARD_REQUIRED 变量来强制这一要求，如果编译器太旧，CMake 将打印一个错误。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Core)</pre></div>
+<p>这段话指示CMake查找Qt 6，并导入Core模块。如果CMake无法定位该模块，那么继续下去就没有意义，因此我们设置REQUIRED标志，让CMake在这种情况下中止。</p>
+<p>若查找成功，该模块将会设置一些在“[<a href="https://doc.qt.io/qt-6.5/cmake-variable-reference.html#module-variables" rel="nofollow">Module variables</a>](<a href="https://doc.qt.io/qt-6.5/cmake-variable-reference.html#module-variables)%E2%80%9D%E4%B8%AD%E6%9C%89%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E%E7%9A%84CMake%E5%8F%98%E9%87%8F%E3%80%82%E6%AD%A4%E5%A4%96%EF%BC%8C%E5%AE%83%E8%BF%98%E4%BC%9A%E5%AF%BC%E5%85%A5%E6%88%91%E4%BB%AC%E5%9C%A8%E4%B8%8B%E6%96%87%E4%BD%BF%E7%94%A8%E7%9A%84Qt6::Core%E7%9B%AE%E6%A0%87%E3%80%82" rel="nofollow">https://doc.qt.io/qt-6.5/cmake-variable-reference.html#module-variables)”中有详细说明的CMake变量。此外，它还会导入我们在下文使用的Qt6::Core目标。</a></p>
+<p>为了让find_package操作成功，CMake必须找到Qt安装位置。有多种方式可以告知CMake关于Qt的信息，但最常见且推荐的方法是将CMake缓存变量<code class="notranslate">CMAKE_PREFIX_PATH</code>设置为包含Qt 6安装前缀的路径。需要注意的是，Qt Creator会为你自动处理这个问题。（如果用CLION 的话 需要添加这个变量，其他的IDE也是这样）</p>
+<pre lang="cm" class="notranslate"><code class="notranslate">qt_standard_project_setup()
+</code></pre>
+<p><code class="notranslate">qt_standard_project_setup</code>命令为典型的Qt应用程序设置了项目范围内的默认设置。</p>
+<p>这其中的一项操作是将<code class="notranslate">CMAKE_AUTOMOC</code>变量设置为<code class="notranslate">ON</code>，这意味着CMake会自动配置规则，以便在需要时自动调用Qt的元对象编译器（moc）。有关更多细节，请参阅[<a href="https://doc.qt.io/qt-6.5/qt-standard-project-setup.html" rel="nofollow">qt_standard_project_setup</a>](<a href="https://doc.qt.io/qt-6.5/qt-standard-project-setup.html)%E7%9A%84%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3%E3%80%82" rel="nofollow">https://doc.qt.io/qt-6.5/qt-standard-project-setup.html)的参考文档。</a></p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_executable(helloworld
+    main.cpp
+)</pre></div>
+<p><code class="notranslate">qt_add_executable()</code> 函数告诉 CMake 我们想要构建一个名为 helloworld 的可执行文件（而不是库）目标。它是内置的 <code class="notranslate">add_executable()</code> 命令的包装，为静态 Qt 构建提供了自动处理链接 Qt 插件、根据平台特定需求定制库名称等附加逻辑。<br>
+该目标应从 C++ 源文件 main.cpp 构建。<br>
+通常，在这里您不需要列出头文件。这与 qmake 不同，在 qmake 中，需要显式列出头文件，以便它们由元对象编译器（moc）处理。<br>
+要创建库，请参见 <code class="notranslate">qt_add_library()</code>。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Core)</pre></div>
+<p>最后，target_link_libraries命令告诉CMake，通过引用上述find_package()调用导入的Qt6::Core目标，helloworld可执行文件使用了Qt Core。这样做不仅会向链接器添加正确的参数，而且还能确保将正确的包含目录和编译器定义传递给C++编译器。PRIVATE关键字对于可执行目标来说并非严格必需，但明确指定它是良好的实践。如果helloworld是一个库而非可执行文件，则应指定PRIVATE或PUBLIC（如果库在其头文件中引用了来自Qt6::Core的任何内容，则为PUBLIC，否则为PRIVATE）。</p>
+<h2>构建C++ GUI应用程序</h2>
+<p>在上一节中，我们展示了用于一个简单控制台应用程序的CMakeLists.txt文件。现在我们将创建一个使用Qt Widgets模块的GUI应用程序。</p>
+<p>以下是完整项目文件：</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">cmake_minimum_required</span>(<span class="pl-k">VERSION</span> 3.16)
+
+<span class="pl-c1">project</span>(helloworld <span class="pl-k">VERSION</span> 1.0.0 <span class="pl-k">LANGUAGES</span> CXX)
+
+<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD 17)
+<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
+
+<span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Widgets)
+qt_standard_project_setup()
+
+qt_add_executable(helloworld
+    mainwindow.ui
+    mainwindow.cpp
+    main.cpp
+)
+
+<span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Widgets)
+
+<span class="pl-c1">set_target_properties</span>(helloworld <span class="pl-k">PROPERTIES</span>
+    WIN32_EXECUTABLE <span class="pl-k">ON</span>
+    <span class="pl-k">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
+)</pre></div>
+<p>让我们逐步解析所做的更改。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Widgets)</pre></div>
+<p>在find_package调用中，我们将Core替换为Widgets。这将定位Qt6Widgets模块，并提供稍后我们将与其链接的Qt6::Widgets目标。</p>
+<p>请注意，由于Qt6::Widgets依赖于它，所以应用程序仍会与Qt6::Core进行链接。</p>
+<p>qt_standard_project_setup()<br>
+除了CMAKE_AUTOMOC之外，qt_standard_project_setup还将CMAKE_AUTOUIC变量设置为ON。这将自动创建规则，在.ui源文件上调用Qt的用户界面编译器(uic)。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_executable(helloworld
+    mainwindow.ui
+    mainwindow.cpp
+    main.cpp
+)</pre></div>
+<p>我们将一个Qt设计师文件(mainwindow.ui)及其相应的C++源文件(mainwindow.cpp)添加到应用程序目标的源文件中。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Widgets)</pre></div>
+<p>在target_link_libraries命令中，我们链接到Qt6::Widgets而不是Qt6::Core。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">set_target_properties</span>(helloworld <span class="pl-k">PROPERTIES</span>
+    WIN32_EXECUTABLE <span class="pl-k">ON</span>
+    <span class="pl-k">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
+)</pre></div>
+<p>最后，我们对应用程序目标设置了以下属性：</p>
+<p>在Windows上防止创建控制台窗口。<br>
+在macOS上创建应用程序包。<br>
+有关这些目标属性的更多信息，请参阅CMake官方文档。</p>
+<h2>项目结构化</h2>
+<p>包含不止一个目标的项目将受益于清晰的项目文件结构。我们将利用CMake的子目录功能来实现这一点。</p>
+<p>鉴于我们计划通过增加更多目标来扩展项目，我们将应用程序的源文件移动到一个子目录中，并在那里创建一个新的CMakeLists.txt文件。</p>
+<p>项目根目录结构如下：</p>
+<pre class="notranslate"><code class="notranslate">&lt;项目根目录&gt;
+├── CMakeLists.txt
+└── src
+    └── app
+        ├── CMakeLists.txt
+        ├── main.cpp
+        ├── mainwindow.cpp
+        ├── mainwindow.h
+        └── mainwindow.ui
+</code></pre>
+<p>顶层（根目录下的）CMakeLists.txt文件包含了整个项目的设置、find_package调用以及add_subdirectory指令：</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">cmake_minimum_required</span>(<span class="pl-k">VERSION</span> 3.16)
+
+<span class="pl-c1">project</span>(helloworld <span class="pl-k">VERSION</span> 1.0.0 <span class="pl-k">LANGUAGES</span> CXX)
+
+<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD 17)
+<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
+
+<span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Widgets)
+qt_standard_project_setup()
+
+<span class="pl-c1">add_subdirectory</span>(src/app)</pre></div>
+<p>在此文件中设置的变量在子目录项目文件中可见。</p>
+<p>应用程序的项目文件<code class="notranslate">src/app/CMakeLists.txt</code>包含了可执行目标：</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_executable(helloworld
+    mainwindow.ui
+    mainwindow.cpp
+    main.cpp
+)
+
+<span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Widgets)
+
+<span class="pl-c1">set_target_properties</span>(helloworld <span class="pl-k">PROPERTIES</span>
+    WIN32_EXECUTABLE <span class="pl-k">ON</span>
+    <span class="pl-k">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
+)</pre></div>
+<p>这种结构使得在项目中轻松添加更多目标，例如库或单元测试变得容易。</p>
+<p>注意：请将您的项目构建目录添加到您系统上运行的任何防病毒应用的排除目录列表中。</p>
+<h2>编译库文件</h2>
+<p>随着项目的扩大，你可能希望将应用程序的部分代码转换成一个库，这个库既可以被应用程序本身使用，也可能被单元测试所引用。本节将展示如何创建这样一个库。</p>
+<p>目前我们的应用程序直接在main.cpp中包含了业务逻辑代码。我们将按照上一节所述，将这些代码提取到名为"businesslogic"的新静态库中，该库位于子目录"src/businesslogic"中。</p>
+<p>为了简化说明，该库仅由一个C++源文件及其对应的头文件组成，这个头文件会被应用程序的main.cpp所包含：</p>
+<p>&lt;项目根目录&gt;<br>
+├── CMakeLists.txt<br>
+└── src<br>
+├── app<br>
+│   ├── ...<br>
+│   └── main.cpp<br>
+└── businesslogic<br>
+├── CMakeLists.txt<br>
+├── businesslogic.cpp<br>
+└── businesslogic.h</p>
+<p>现在让我们来看看库的项目文件（src/businesslogic/CMakeLists.txt）的内容。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_library(businesslogic <span class="pl-k">STATIC</span>
+    businesslogic.cpp
+)
+<span class="pl-c1">target_link_libraries</span>(businesslogic <span class="pl-k">PRIVATE</span> Qt6::Core)
+<span class="pl-c1">target_include_directories</span>(businesslogic <span class="pl-k">INTERFACE</span> <span class="pl-smi">${CMAKE_CURRENT_SOURCE_DIR}</span>)</pre></div>
+<p>逐行解释如下：</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_library(businesslogic <span class="pl-k">STATIC</span>
+    businesslogic.cpp
+)</pre></div>
+<p><code class="notranslate">qt_add_library</code>命令创建了一个名为<code class="notranslate">businesslogic</code>的库。稍后，我们将让应用程序链接至这个目标。</p>
+<p><code class="notranslate">STATIC</code>关键字表示这是一个静态库。如果我们想要创建共享库或动态库，应当使用<code class="notranslate">SHARED</code>关键字。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_link_libraries</span>(businesslogic <span class="pl-k">PRIVATE</span> Qt6::Core)</pre></div>
+<p>我们有一个静态库，实际上并不需要链接其他库。但由于我们的库使用了QtCore中的类，因此添加了一个对Qt6::Core的链接依赖。这样做会引入必要的QtCore包含路径和预处理器定义。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_include_directories</span>(businesslogic <span class="pl-k">INTERFACE</span> <span class="pl-smi">${CMAKE_CURRENT_SOURCE_DIR}</span>)</pre></div>
+<p>库的API在头文件<code class="notranslate">businesslogic/businesslogic.h</code>中定义。通过调用<code class="notranslate">target_include_directories</code>，我们可以确保使用我们库的所有目标都会自动添加指向<code class="notranslate">businesslogic</code>目录的绝对路径作为包含路径。</p>
+<p>这样，在main.cpp中我们就无需使用相对路径来定位<code class="notranslate">businesslogic.h</code>，而可以直接编写：</p>
+<div class="highlight highlight-source-c++"><pre class="notranslate">#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>businesslogic.h<span class="pl-pds">&gt;</span></span></pre></div>
+<p>最后，我们需要在顶级项目文件中添加库的子目录：</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">add_subdirectory</span>(src/app)
+<span class="pl-c1">add_subdirectory</span>(src/businesslogic)</pre></div>
+<p>这样就完成了将库添加到主项目的配置。</p>
+<h2>使用库</h2>
+<p>为了使用上一节中创建的库，我们需要指导CMake链接该库：</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span>
+    businesslogic
+    Qt6::Widgets
+)</pre></div>
+<p>这样可以确保编译main.cpp时能找到<code class="notranslate">businesslogic.h</code>头文件。此外，<code class="notranslate">businesslogic</code>静态库将成为<code class="notranslate">helloworld</code>可执行文件的一部分。</p>
+<p>在CMake术语中，库<code class="notranslate">businesslogic</code>指定了其使用者（即应用程序）必须满足的使用要求（即包含路径）。<code class="notranslate">target_link_libraries</code>命令负责处理这一需求。这意味着当我们在<code class="notranslate">helloworld</code>目标中链接<code class="notranslate">businesslogic</code>库时，CMake不仅会把库连接到可执行文件中，还会自动处理所需头文件的搜索路径问题，确保正确包含和编译相关代码。同时，我们也链接了<code class="notranslate">Qt6::Widgets</code>库，确保应用程序具备Qt Widgets模块的功能。</p>
+<h2>添加资源文件</h2>
+<p>我们希望在应用程序中显示一些图像，因此使用Qt资源系统来添加它们。</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_resources(helloworld imageresources
+    PREFIX <span class="pl-s">"/images"</span>
+    <span class="pl-k">FILES</span> logo.png splashscreen.png
+)</pre></div>
+<p><code class="notranslate">qt_add_resources</code>命令会自动创建一个包含所引用图像的Qt资源。在C++源代码中，可以通过指定的资源前缀来访问这些图像：</p>
+<div class="highlight highlight-source-c++"><pre class="notranslate">logoLabel-&gt;<span class="pl-en">setPixmap</span>(QPixmap(<span class="pl-s"><span class="pl-pds">"</span>:/images/logo.png<span class="pl-pds">"</span></span>));</pre></div>
+<p><code class="notranslate">qt_add_resources</code>命令的第一个参数可以是变量名或者目标名称。我们推荐使用如上例所示基于目标的变体形式。这意味着当你将目标名<code class="notranslate">helloworld</code>作为命令的第一个参数时，CMake会将资源文件集成到目标<code class="notranslate">helloworld</code>的构建过程中，并生成相应的<code class="notranslate">.qrc</code>资源文件和编译后的资源对象。这样，在你的应用程序中，就可以通过前缀<code class="notranslate">/images</code>来访问到<code class="notranslate">logo.png</code>和<code class="notranslate">splashscreen.png</code>这两张图片资源了。</p>
+<h2>添加翻译</h2>
+<p>在Qt项目中，字符串的翻译存储在.ts文件中。有关详情，请参阅Qt的国际化指南。</p>
+<p>要将.ts文件添加到项目中，请使用<code class="notranslate">qt_add_translations</code>命令。</p>
+<p>下面的示例向helloworld目标添加了德语和法语两个翻译文件：</p>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_translations(helloworld
+    TS_FILES helloworld_de.ts helloworld_fr.ts)</pre></div>
+<p>这将创建构建系统规则，用于自动从.ts文件生成对应的.qm文件。默认情况下，生成的.qm文件会被嵌入到资源中，并可通过"/i18n"资源前缀访问。</p>
+<p>为了更新.ts文件中的条目，可以构建update_translations目标：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ cmake --build <span class="pl-c1">.</span> --target update_translations</pre></div>
+<p>若要手动触发.qm文件的生成，可构建release_translations目标：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ cmake --build <span class="pl-c1">.</span> --target release_translations</pre></div>
+<p>关于如何影响.ts文件的处理以及将其嵌入资源中的更多细节，请参考<code class="notranslate">qt_add_translations</code>的官方文档说明。</p>
+<p><code class="notranslate">qt_add_translations</code>命令是一个便捷包装器。如果需要对.ts文件和.qm文件的处理方式有更细致的控制，可以使用底层命令<code class="notranslate">qt_add_lupdate</code>和<code class="notranslate">qt_add_lrelease</code>。</p>
+<p>进一步阅读：</p>
+<ul>
+<li>
+<p>官方CMake文档是使用CMake工作的宝贵资源。</p>
+</li>
+<li>
+<p>官方CMake教程涵盖了常见的构建系统任务。</p>
+</li>
+<li>
+<p>《Professional CMake: A Practical Guide》一书为最相关的CMake特性提供了极好的入门介绍。</p>
+</li>
+</ul></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+</div>
+    <div id="footer">Copyright © <span id="year"></span><a href="https://tensor-tech.github.io"> Blog Title </a>
+<p>
+<span id="runday"></span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a>
+</p>
+
+<script>
+if(""!=""){
+    var now=new Date();
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("year").innerHTML=now.getFullYear();
+    if(""!=""){document.getElementById("runday").innerHTML=" • "+"网站运行"+diffDay+"天"+" • ";}
+    else{document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";}
+}
+</script>
+</div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n\n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","tensor-tech/tensor-tech.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+</script>
+
+
+
+</html>
