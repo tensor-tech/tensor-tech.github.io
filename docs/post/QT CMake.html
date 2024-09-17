@@ -265,7 +265,7 @@ qt_standard_project_setup()
 <div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_include_directories</span>(businesslogic <span class="pl-k">INTERFACE</span> <span class="pl-smi">${CMAKE_CURRENT_SOURCE_DIR}</span>)</pre></div>
 <p>库的API在头文件<code class="notranslate">businesslogic/businesslogic.h</code>中定义。通过调用<code class="notranslate">target_include_directories</code>，我们可以确保使用我们库的所有目标都会自动添加指向<code class="notranslate">businesslogic</code>目录的绝对路径作为包含路径。</p>
 <p>这样，在main.cpp中我们就无需使用相对路径来定位<code class="notranslate">businesslogic.h</code>，而可以直接编写：</p>
-<div class="highlight highlight-source-c++"><pre class="notranslate">#include &lt;businesslogic.h&gt;</pre></div>
+<div class="highlight highlight-source-c++"><pre class="notranslate">#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>businesslogic.h<span class="pl-pds">&gt;</span></span></pre></div>
 <p>最后，我们需要在顶级项目文件中添加库的子目录：</p>
 <div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">add_subdirectory</span>(src/app)
 <span class="pl-c1">add_subdirectory</span>(src/businesslogic)</pre></div>
@@ -285,7 +285,7 @@ qt_standard_project_setup()
     <span class="pl-k">FILES</span> logo.png splashscreen.png
 )</pre></div>
 <p><code class="notranslate">qt_add_resources</code>命令会自动创建一个包含所引用图像的Qt资源。在C++源代码中，可以通过指定的资源前缀来访问这些图像：</p>
-<div class="highlight highlight-source-c++"><pre class="notranslate">logoLabel-&gt;setPixmap(QPixmap(":/images/logo.png"));</pre></div>
+<div class="highlight highlight-source-c++"><pre class="notranslate">logoLabel-&gt;<span class="pl-en">setPixmap</span>(QPixmap(<span class="pl-s"><span class="pl-pds">"</span>:/images/logo.png<span class="pl-pds">"</span></span>));</pre></div>
 <p><code class="notranslate">qt_add_resources</code>命令的第一个参数可以是变量名或者目标名称。我们推荐使用如上例所示基于目标的变体形式。这意味着当你将目标名<code class="notranslate">helloworld</code>作为命令的第一个参数时，CMake会将资源文件集成到目标<code class="notranslate">helloworld</code>的构建过程中，并生成相应的<code class="notranslate">.qrc</code>资源文件和编译后的资源对象。这样，在你的应用程序中，就可以通过前缀<code class="notranslate">/images</code>来访问到<code class="notranslate">logo.png</code>和<code class="notranslate">splashscreen.png</code>这两张图片资源了。</p>
 <h2>添加翻译</h2>
 <p>在Qt项目中，字符串的翻译存储在.ts文件中。有关详情，请参阅Qt的国际化指南。</p>
