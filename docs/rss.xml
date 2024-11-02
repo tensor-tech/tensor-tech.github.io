@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tensor的博客</title><link>https://tensor-tech.github.io</link><description>欢迎来到我的博客</description><copyright>Tensor的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/30520357?s=48&amp;v=4</url><title>avatar</title><link>https://tensor-tech.github.io</link></image><lastBuildDate>Mon, 20 May 2024 12:19:37 +0000</lastBuildDate><managingEditor>Tensor的博客</managingEditor><ttl>60</ttl><webMaster>Tensor的博客</webMaster><item><title>QT CMake</title><link>https://tensor-tech.github.io/post/QT%20CMake.html</link><description># QT CMake&#13;
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Tensor的博客</title><link>https://tensor-tech.github.io</link><description>欢迎来到我的博客</description><copyright>Tensor的博客</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/30520357?s=48&amp;v=4</url><title>avatar</title><link>https://tensor-tech.github.io</link></image><lastBuildDate>Sat, 02 Nov 2024 13:42:56 +0000</lastBuildDate><managingEditor>Tensor的博客</managingEditor><ttl>60</ttl><webMaster>Tensor的博客</webMaster><item><title>Ubuntu Server 安装 </title><link>https://tensor-tech.github.io/post/Ubuntu%20Server%20-an-zhuang-%20.html</link><description>## 设置语言&#13;
+我选择英文&#13;
+![image](https://github.com/user-attachments/assets/6550d533-c485-4b93-a1c8-b001f2d0cfc6)&#13;
+&#13;
+## 安装器更新&#13;
+选择继续不更新&#13;
+![image](https://github.com/user-attachments/assets/3c8e66f3-c726-4311-ba3a-cd94982cccaf)&#13;
+&#13;
+## 选择键盘布局&#13;
+选择 Done&#13;
+![image](https://github.com/user-attachments/assets/e77836f0-ae72-4c07-b76d-6a72a4582424)&#13;
+&#13;
+## 选择安装方式&#13;
+选择第一个默认。</description><guid isPermaLink="true">https://tensor-tech.github.io/post/Ubuntu%20Server%20-an-zhuang-%20.html</guid><pubDate>Sat, 02 Nov 2024 13:39:03 +0000</pubDate></item><item><title>QT CMake</title><link>https://tensor-tech.github.io/post/QT%20CMake.html</link><description># QT CMake&#13;
 &#13;
 文章来源：https://doc.qt.io/qt-6.5/cmake-get-started.html&#13;
 &#13;
