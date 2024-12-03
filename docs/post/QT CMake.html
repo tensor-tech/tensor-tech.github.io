@@ -104,31 +104,31 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <h2>构建一个C++控制台应用程序</h2>
 <p>CMake项目是由用CMake语言编写的文件定义的。主要的文件叫做<code class="notranslate">CMakeLists.txt</code>，通常放在实际程序源代码的同一目录下。<br>
 下面是一个使用Qt编写的C++控制台应用程序的典型<code class="notranslate">CMakeLists.txt</code>文件：</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">cmake_minimum_required</span>(<span class="pl-k">VERSION</span> 3.16)
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">cmake_minimum_required</span>(<span class="pl-e">VERSION</span> 3.16)
 
-<span class="pl-c1">project</span>(helloworld <span class="pl-k">VERSION</span> 1.0.0 <span class="pl-k">LANGUAGES</span> CXX)
+<span class="pl-k">project</span>(helloworld <span class="pl-e">VERSION</span> 1.0.0 LANGUAGES CXX)
 
-<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD 17)
-<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
+<span class="pl-k">set</span>(CMAKE_CXX_STANDARD 17)
+<span class="pl-k">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
 
-<span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Core)
+<span class="pl-k">find_package</span>(Qt6 REQUIRED COMPONENTS Core)
 qt_standard_project_setup()
 
 qt_add_executable(helloworld
     main.cpp
 )
 
-<span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Core)</pre></div>
+<span class="pl-k">target_link_libraries</span>(helloworld <span class="pl-e">PRIVATE</span> Qt6::Core)</pre></div>
 <p>让我们逐行来了解一下内容。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">cmake_minimum_required</span>(<span class="pl-k">VERSION</span> 3.16)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">cmake_minimum_required</span>(<span class="pl-e">VERSION</span> 3.16)</pre></div>
 <p><code class="notranslate">cmake_minimum_required() </code>指定了应用程序所需的最低CMake版本，Qt本身至少需要CMake版本为3.16。</p>
 <p>如果您使用的是静态构建的Qt - 在Qt for iOS和Qt for WebAssembly中这是默认的 - 您需要CMake 3.21.1或更高版本。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">project</span>(helloworld <span class="pl-k">VERSION</span> 1.0.0 <span class="pl-k">LANGUAGES</span> CXX)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">project</span>(helloworld <span class="pl-e">VERSION</span> 1.0.0 LANGUAGES CXX)</pre></div>
 <p>project() 设置项目名称和默认项目版本。LANGUAGES 参数告诉 CMake 程序是用 C++ 编写的。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">set</span>(CMAKE_CXX_STANDARD 17)
-<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">set</span>(CMAKE_CXX_STANDARD 17)
+<span class="pl-k">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)</pre></div>
 <p>Qt 6 需要一个支持 C++ 版本 17 或更新的编译器。通过设置 CMAKE_CXX_STANDARD 和 CMAKE_CXX_STANDARD_REQUIRED 变量来强制这一要求，如果编译器太旧，CMake 将打印一个错误。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Core)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">find_package</span>(Qt6 REQUIRED COMPONENTS Core)</pre></div>
 <p>这段话指示CMake查找Qt 6，并导入Core模块。如果CMake无法定位该模块，那么继续下去就没有意义，因此我们设置REQUIRED标志，让CMake在这种情况下中止。</p>
 <p>若查找成功，该模块将会设置一些在“[<a href="https://doc.qt.io/qt-6.5/cmake-variable-reference.html#module-variables" rel="nofollow">Module variables</a>](<a href="https://doc.qt.io/qt-6.5/cmake-variable-reference.html#module-variables)%E2%80%9D%E4%B8%AD%E6%9C%89%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E%E7%9A%84CMake%E5%8F%98%E9%87%8F%E3%80%82%E6%AD%A4%E5%A4%96%EF%BC%8C%E5%AE%83%E8%BF%98%E4%BC%9A%E5%AF%BC%E5%85%A5%E6%88%91%E4%BB%AC%E5%9C%A8%E4%B8%8B%E6%96%87%E4%BD%BF%E7%94%A8%E7%9A%84Qt6::Core%E7%9B%AE%E6%A0%87%E3%80%82" rel="nofollow">https://doc.qt.io/qt-6.5/cmake-variable-reference.html#module-variables)”中有详细说明的CMake变量。此外，它还会导入我们在下文使用的Qt6::Core目标。</a></p>
 <p>为了让find_package操作成功，CMake必须找到Qt安装位置。有多种方式可以告知CMake关于Qt的信息，但最常见且推荐的方法是将CMake缓存变量<code class="notranslate">CMAKE_PREFIX_PATH</code>设置为包含Qt 6安装前缀的路径。需要注意的是，Qt Creator会为你自动处理这个问题。（如果用CLION 的话 需要添加这个变量，其他的IDE也是这样）</p>
@@ -143,19 +143,19 @@ qt_add_executable(helloworld
 该目标应从 C++ 源文件 main.cpp 构建。<br>
 通常，在这里您不需要列出头文件。这与 qmake 不同，在 qmake 中，需要显式列出头文件，以便它们由元对象编译器（moc）处理。<br>
 要创建库，请参见 <code class="notranslate">qt_add_library()</code>。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Core)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">target_link_libraries</span>(helloworld <span class="pl-e">PRIVATE</span> Qt6::Core)</pre></div>
 <p>最后，target_link_libraries命令告诉CMake，通过引用上述find_package()调用导入的Qt6::Core目标，helloworld可执行文件使用了Qt Core。这样做不仅会向链接器添加正确的参数，而且还能确保将正确的包含目录和编译器定义传递给C++编译器。PRIVATE关键字对于可执行目标来说并非严格必需，但明确指定它是良好的实践。如果helloworld是一个库而非可执行文件，则应指定PRIVATE或PUBLIC（如果库在其头文件中引用了来自Qt6::Core的任何内容，则为PUBLIC，否则为PRIVATE）。</p>
 <h2>构建C++ GUI应用程序</h2>
 <p>在上一节中，我们展示了用于一个简单控制台应用程序的CMakeLists.txt文件。现在我们将创建一个使用Qt Widgets模块的GUI应用程序。</p>
 <p>以下是完整项目文件：</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">cmake_minimum_required</span>(<span class="pl-k">VERSION</span> 3.16)
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">cmake_minimum_required</span>(<span class="pl-e">VERSION</span> 3.16)
 
-<span class="pl-c1">project</span>(helloworld <span class="pl-k">VERSION</span> 1.0.0 <span class="pl-k">LANGUAGES</span> CXX)
+<span class="pl-k">project</span>(helloworld <span class="pl-e">VERSION</span> 1.0.0 LANGUAGES CXX)
 
-<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD 17)
-<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
+<span class="pl-k">set</span>(CMAKE_CXX_STANDARD 17)
+<span class="pl-k">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
 
-<span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Widgets)
+<span class="pl-k">find_package</span>(Qt6 REQUIRED COMPONENTS Widgets)
 qt_standard_project_setup()
 
 qt_add_executable(helloworld
@@ -164,14 +164,14 @@ qt_add_executable(helloworld
     main.cpp
 )
 
-<span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Widgets)
+<span class="pl-k">target_link_libraries</span>(helloworld <span class="pl-e">PRIVATE</span> Qt6::Widgets)
 
-<span class="pl-c1">set_target_properties</span>(helloworld <span class="pl-k">PROPERTIES</span>
-    WIN32_EXECUTABLE <span class="pl-k">ON</span>
-    <span class="pl-k">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
+<span class="pl-k">set_target_properties</span>(helloworld PROPERTIES
+    <span class="pl-v">WIN32_EXECUTABLE</span> <span class="pl-k">ON</span>
+    <span class="pl-v">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
 )</pre></div>
 <p>让我们逐步解析所做的更改。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Widgets)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">find_package</span>(Qt6 REQUIRED COMPONENTS Widgets)</pre></div>
 <p>在find_package调用中，我们将Core替换为Widgets。这将定位Qt6Widgets模块，并提供稍后我们将与其链接的Qt6::Widgets目标。</p>
 <p>请注意，由于Qt6::Widgets依赖于它，所以应用程序仍会与Qt6::Core进行链接。</p>
 <p>qt_standard_project_setup()<br>
@@ -182,11 +182,11 @@ qt_add_executable(helloworld
     main.cpp
 )</pre></div>
 <p>我们将一个Qt设计师文件(mainwindow.ui)及其相应的C++源文件(mainwindow.cpp)添加到应用程序目标的源文件中。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Widgets)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">target_link_libraries</span>(helloworld <span class="pl-e">PRIVATE</span> Qt6::Widgets)</pre></div>
 <p>在target_link_libraries命令中，我们链接到Qt6::Widgets而不是Qt6::Core。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">set_target_properties</span>(helloworld <span class="pl-k">PROPERTIES</span>
-    WIN32_EXECUTABLE <span class="pl-k">ON</span>
-    <span class="pl-k">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">set_target_properties</span>(helloworld PROPERTIES
+    <span class="pl-v">WIN32_EXECUTABLE</span> <span class="pl-k">ON</span>
+    <span class="pl-v">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
 )</pre></div>
 <p>最后，我们对应用程序目标设置了以下属性：</p>
 <p>在Windows上防止创建控制台窗口。<br>
@@ -207,17 +207,17 @@ qt_add_executable(helloworld
         └── mainwindow.ui
 </code></pre>
 <p>顶层（根目录下的）CMakeLists.txt文件包含了整个项目的设置、find_package调用以及add_subdirectory指令：</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">cmake_minimum_required</span>(<span class="pl-k">VERSION</span> 3.16)
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">cmake_minimum_required</span>(<span class="pl-e">VERSION</span> 3.16)
 
-<span class="pl-c1">project</span>(helloworld <span class="pl-k">VERSION</span> 1.0.0 <span class="pl-k">LANGUAGES</span> CXX)
+<span class="pl-k">project</span>(helloworld <span class="pl-e">VERSION</span> 1.0.0 LANGUAGES CXX)
 
-<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD 17)
-<span class="pl-c1">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
+<span class="pl-k">set</span>(CMAKE_CXX_STANDARD 17)
+<span class="pl-k">set</span>(CMAKE_CXX_STANDARD_REQUIRED <span class="pl-k">ON</span>)
 
-<span class="pl-c1">find_package</span>(Qt6 <span class="pl-k">REQUIRED</span> <span class="pl-k">COMPONENTS</span> Widgets)
+<span class="pl-k">find_package</span>(Qt6 REQUIRED COMPONENTS Widgets)
 qt_standard_project_setup()
 
-<span class="pl-c1">add_subdirectory</span>(src/app)</pre></div>
+<span class="pl-k">add_subdirectory</span>(src/app)</pre></div>
 <p>在此文件中设置的变量在子目录项目文件中可见。</p>
 <p>应用程序的项目文件<code class="notranslate">src/app/CMakeLists.txt</code>包含了可执行目标：</p>
 <div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_executable(helloworld
@@ -226,11 +226,11 @@ qt_standard_project_setup()
     main.cpp
 )
 
-<span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span> Qt6::Widgets)
+<span class="pl-k">target_link_libraries</span>(helloworld <span class="pl-e">PRIVATE</span> Qt6::Widgets)
 
-<span class="pl-c1">set_target_properties</span>(helloworld <span class="pl-k">PROPERTIES</span>
-    WIN32_EXECUTABLE <span class="pl-k">ON</span>
-    <span class="pl-k">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
+<span class="pl-k">set_target_properties</span>(helloworld PROPERTIES
+    <span class="pl-v">WIN32_EXECUTABLE</span> <span class="pl-k">ON</span>
+    <span class="pl-v">MACOSX_BUNDLE</span> <span class="pl-k">ON</span>
 )</pre></div>
 <p>这种结构使得在项目中轻松添加更多目标，例如库或单元测试变得容易。</p>
 <p>注意：请将您的项目构建目录添加到您系统上运行的任何防病毒应用的排除目录列表中。</p>
@@ -249,30 +249,30 @@ qt_standard_project_setup()
 ├── businesslogic.cpp<br>
 └── businesslogic.h</p>
 <p>现在让我们来看看库的项目文件（src/businesslogic/CMakeLists.txt）的内容。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_library(businesslogic <span class="pl-k">STATIC</span>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_library(businesslogic <span class="pl-e">STATIC</span>
     businesslogic.cpp
 )
-<span class="pl-c1">target_link_libraries</span>(businesslogic <span class="pl-k">PRIVATE</span> Qt6::Core)
-<span class="pl-c1">target_include_directories</span>(businesslogic <span class="pl-k">INTERFACE</span> <span class="pl-smi">${CMAKE_CURRENT_SOURCE_DIR}</span>)</pre></div>
+<span class="pl-k">target_link_libraries</span>(businesslogic <span class="pl-e">PRIVATE</span> Qt6::Core)
+<span class="pl-k">target_include_directories</span>(businesslogic <span class="pl-e">INTERFACE</span> <span class="pl-k">${CMAKE_CURRENT_SOURCE_DIR}</span>)</pre></div>
 <p>逐行解释如下：</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_library(businesslogic <span class="pl-k">STATIC</span>
+<div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_library(businesslogic <span class="pl-e">STATIC</span>
     businesslogic.cpp
 )</pre></div>
 <p><code class="notranslate">qt_add_library</code>命令创建了一个名为<code class="notranslate">businesslogic</code>的库。稍后，我们将让应用程序链接至这个目标。</p>
 <p><code class="notranslate">STATIC</code>关键字表示这是一个静态库。如果我们想要创建共享库或动态库，应当使用<code class="notranslate">SHARED</code>关键字。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_link_libraries</span>(businesslogic <span class="pl-k">PRIVATE</span> Qt6::Core)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">target_link_libraries</span>(businesslogic <span class="pl-e">PRIVATE</span> Qt6::Core)</pre></div>
 <p>我们有一个静态库，实际上并不需要链接其他库。但由于我们的库使用了QtCore中的类，因此添加了一个对Qt6::Core的链接依赖。这样做会引入必要的QtCore包含路径和预处理器定义。</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_include_directories</span>(businesslogic <span class="pl-k">INTERFACE</span> <span class="pl-smi">${CMAKE_CURRENT_SOURCE_DIR}</span>)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">target_include_directories</span>(businesslogic <span class="pl-e">INTERFACE</span> <span class="pl-k">${CMAKE_CURRENT_SOURCE_DIR}</span>)</pre></div>
 <p>库的API在头文件<code class="notranslate">businesslogic/businesslogic.h</code>中定义。通过调用<code class="notranslate">target_include_directories</code>，我们可以确保使用我们库的所有目标都会自动添加指向<code class="notranslate">businesslogic</code>目录的绝对路径作为包含路径。</p>
 <p>这样，在main.cpp中我们就无需使用相对路径来定位<code class="notranslate">businesslogic.h</code>，而可以直接编写：</p>
 <div class="highlight highlight-source-c++"><pre class="notranslate">#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>businesslogic.h<span class="pl-pds">&gt;</span></span></pre></div>
 <p>最后，我们需要在顶级项目文件中添加库的子目录：</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">add_subdirectory</span>(src/app)
-<span class="pl-c1">add_subdirectory</span>(src/businesslogic)</pre></div>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">add_subdirectory</span>(src/app)
+<span class="pl-k">add_subdirectory</span>(src/businesslogic)</pre></div>
 <p>这样就完成了将库添加到主项目的配置。</p>
 <h2>使用库</h2>
 <p>为了使用上一节中创建的库，我们需要指导CMake链接该库：</p>
-<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-c1">target_link_libraries</span>(helloworld <span class="pl-k">PRIVATE</span>
+<div class="highlight highlight-source-cmake"><pre class="notranslate"><span class="pl-k">target_link_libraries</span>(helloworld <span class="pl-e">PRIVATE</span>
     businesslogic
     Qt6::Widgets
 )</pre></div>
@@ -281,8 +281,8 @@ qt_standard_project_setup()
 <h2>添加资源文件</h2>
 <p>我们希望在应用程序中显示一些图像，因此使用Qt资源系统来添加它们。</p>
 <div class="highlight highlight-source-cmake"><pre class="notranslate">qt_add_resources(helloworld imageresources
-    PREFIX <span class="pl-s">"/images"</span>
-    <span class="pl-k">FILES</span> logo.png splashscreen.png
+    <span class="pl-e">PREFIX</span> <span class="pl-s">"/images"</span>
+    <span class="pl-e">FILES</span> logo.png splashscreen.png
 )</pre></div>
 <p><code class="notranslate">qt_add_resources</code>命令会自动创建一个包含所引用图像的Qt资源。在C++源代码中，可以通过指定的资源前缀来访问这些图像：</p>
 <div class="highlight highlight-source-c++"><pre class="notranslate">logoLabel-&gt;<span class="pl-en">setPixmap</span>(QPixmap(<span class="pl-s"><span class="pl-pds">"</span>:/images/logo.png<span class="pl-pds">"</span></span>));</pre></div>
